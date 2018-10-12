@@ -34,10 +34,10 @@ require "json"
 require "http"
 require "optparse"
 
-API_KEY = "WsnNTUNYbI9WZVvVcr_YCkEjuofNIlR80uCTnU1qDZ1N-NoWCJ2HYELVzxLOXxZPCmsvdMFxmnLZQ-NsShyL9t79lh7LkJD42JJ6W0X-7pIzxF6WbLf32JM1U_G8W3Yx"
+
 API_HOST = "https://api.yelp.com"
 SEARCH_PATH = "/v3/businesses/search"
-SEARCH_LIMIT = 5
+SEARCH_LIMIT = 1
 
 def search(term, location)
   url = "#{API_HOST}#{SEARCH_PATH}"
@@ -47,8 +47,9 @@ def search(term, location)
     limit: SEARCH_LIMIT
   }
 
-  response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
+  response = HTTP.auth("Bearer #{ENV['API_KEY']}").get(url, params: params)
   response.parse
 end
 
-puts search("ramen", "nyc")
+
+puts search("dumpling", "nyc")
