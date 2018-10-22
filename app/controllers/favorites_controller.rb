@@ -35,7 +35,7 @@ class FavoritesController < ApplicationController
 
   # DELETE /favorites/1
   def destroy
-    @favorite.destroy 
+    @favorite.destroy
   end
 
   private
@@ -48,6 +48,6 @@ class FavoritesController < ApplicationController
 
 
     def favorite_params  ###because of the security reason, we pass attributes as strong params. plus, if you save attributes as strong_params, they won't crush the data when they're saved in the database.
-      params.require(:favorite).permit(:saved, :user_id, :restaurant_id)
+      params.require(:favorite).permit(:user_id, :restaurant_id)
     end
 end

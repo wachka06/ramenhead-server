@@ -7,7 +7,9 @@ class CreateRestaurants < ActiveRecord::Migration[5.2]
       t.string :price
       t.string :display_phone
       t.string :display_address
-      t.string :map 
+      t.string :longitude
+      t.string :latitude
+      t.string :api_id
 
       t.timestamps
     end

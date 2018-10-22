@@ -4,7 +4,6 @@ class RestaurantsController < ApplicationController
   # GET /favorites
   def index
     @restaurants = Restaurant.all
-
     render json: @restaurants
   end
 
@@ -48,6 +47,6 @@ class RestaurantsController < ApplicationController
 
 
     def favorite_params  ###because of the security reason, we pass attributes as strong params. plus, if you save attributes as strong_params, they won't crush the data when they're saved in the database.
-      params.require(:restaurant).permit(:name, :image_url, :rating, :price, :display_phone, :display_address, :map)
+      params.require(:restaurant).permit(:name, :image_url, :rating, :price, :display_phone, :display_address, :longitude, :latitude, :api_id)
     end
 end
