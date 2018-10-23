@@ -1,14 +1,14 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
 
-  # GET /reviews
+  # GET /users
   def index
     @users = User.all
 
     render json: @users
   end
 
-  # GET /reviews/1
+  # GET /users/1
   def show
     render json: {
       name: @user.name,
@@ -17,7 +17,7 @@ class UsersController < ApplicationController
     }
   end
 
-  # POST /reviews
+  # POST /users
   def create
     @user = User.new(user_params)
 
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /reviews/1
+  # PATCH/PUT users/1
   def update
     if @user.update(user_params)
       render json: @user
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /reviews/1
+  # DELETE /users/1
   def destroy
     @user.destroy
   end
@@ -54,47 +54,41 @@ class UsersController < ApplicationController
           rating: params[:restaurant][:rating],
           price: params[:restaurant][:price],
           display_phone: params[:restaurant][:display_phone],
-          display_address: params[:restaurant][:display_address],
-          longitude: params[:restaurant][:longitude],
-          latitude: params[:restaurant][:latitude],
-          api_id: params[:restaurant][:api_id]
+          display_address: params[:restaurant][:location][:display_address]*" ",
+          longitude: params[:restaurant][:coordinates][:longitude],
+          latitude: params[:restaurant][:coordinates][:latitude],
+          api_id: params[:restaurant][:id]
         })
     end
+    # byebug
        #API key is unique   {restaurant: {...ramenObj}, user_id: 1} => params
     @favorite = Favorite.find_by(user_id: params[:user_id], restaurant_id: @restaurant.id)
 
     if !@favorite #if this favorite instance doesn't exist...
-      # @restaurant = Restaurant.create(params['restaurant'])
+
       @favorite = Favorite.create(user_id: params[:user_id], restaurant_id: @restaurant.id)
       # byebug
-      render json: { message: 'succesfully created'}
+      render json: { message: 'succesfully created'} # this message will be sent to the frontend
     else
       @favorite.destroy
-      render json: { message: 'succesfully destroyed' }
+      render json: { message: 'succesfully destroyed' } # if @favorite already exists, @favorite row will be deleted from the database. (unfavorite)
     end
-
-    # if condition
-    #   render json: { message: 'succesfully created'}
-    # else
-    #   render json: { message: 'succesfully destroyed' }
-    # end
-    # @favorite = Favorite.find_by(user_id: 1, restaurant_id: 2)
-
   end
-  #
-  # def add_review
-  #
-  # end
 
   def get_favorites #send the saved data from the backend to the frontend
     # byebug
-    @user = User.find(params[:id])
+    @user = User.find(params[:id]) #find take integer as the parameter
     @favorite = @user.favorites # Currently, @favorite just stay in backend
+    # check 'http://localhost:3000/1/get_favorites' if the favorite restaurant is saved in the user's show page.
     # render json: "Isho Boiii"
     render json: @favorite # @favorite need to be changed into json script and to be sent to the frontend(render...shows to the json).
-    # at 'http://localhost:3000/restaurants', you can see the data which is rendered.
+    # at 'http://localhost:3000/favorites', you can see the data which is rendered.
     # byebug
   end
+
+  # def add_review
+  #
+  # end
 
   private
     # Use callbacks to share common setup or constraints between actions.
