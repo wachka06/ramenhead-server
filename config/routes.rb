@@ -14,4 +14,8 @@ Rails.application.routes.draw do
   get '/:id/get_favorites' => 'users#get_favorites'
 
   post '/add_review' => 'reviews#add_review'
+
+  get '/:api_id/get_reviews' => 'reviews#get_reviews'
+
+  get '/:id/get_user_reviews' =>'reviews#get_user_reviews'
 end

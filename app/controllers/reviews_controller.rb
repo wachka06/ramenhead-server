@@ -15,30 +15,46 @@ class ReviewsController < ApplicationController
 
   # POST /reviews
   def create
-    byebug
-    @restaurant = Restaurant.find_or_create_by(
-      name: params[:restaurant][:name],
-      image_url: params[:restaurant][:image_url],
-      rating: params[:restaurant][:rating],
-      price: params[:restaurant][:price],
-      display_phone: params[:restaurant][:display_phone],
-      display_address: params[:restaurant][:location][:display_address],
-      longitude: params[:restaurant][:coordinates][:longitude],
-      latitude: params[:restaurant][:coordinates][:latitude],
-      api_id: params[:restaurant][:id]
-    )
+    # byebug
+    if Restaurant.find_by(api_id: params[:review][:api_id])
+      @restaurant = Restaurant.find_by(api_id: params[:review][:api_id])
+    else
+      # byebug
+      @restaurant = Restaurant.create({
+          name: params[:restaurant][:name],
+          image_url: params[:restaurant][:image_url],
+          rating: params[:restaurant][:rating],
+          price: params[:restaurant][:price],
+          display_phone: params[:restaurant][:display_phone],
+          display_address: params[:restaurant][:display_address],
+          longitude: params[:restaurant][:longitude],
+          latitude: params[:restaurant][:latitude],
+          api_id: params[:restaurant][:api_id]
+        })
+    end
 
-    @review = Review.new(
-      rating: params[:review][:rating],
+    @review = Review.create(rating: params[:review][:rating],
       contents: params[:review][:contents],
       user_id: User.first.id,  # params[:review][:user_id]
-      restaurant_id: @restaurant.id
-    )
-    if @review.save
-      render json: @review, status: :created, location: @review
-    else
-      render json: @review.errors, status: :unprocessable_entity
-    end
+      restaurant_id: @restaurant.id)
+      # byebug
+      render json: { message: 'succesfully created'} # this message will be sent to the frontend
+  end
+
+  def get_reviews
+    @reviews = Review.where(api_id: params[:api_id])
+    render json: @reviews
+  end
+
+  def get_user_reviews
+    # byebug
+    @user = User.find(params[:id]) #find take integer as the parameter
+    @review = @user.reviews # Currently, @favorite just stay in backend
+    # check 'http://localhost:3000/1/get_favorites' if the favorite restaurant is saved in the user's show page.
+    # render json: "Isho Boiii"
+    render json: @review # @favorite need to be changed into json script and to be sent to the frontend(render...shows to the json).
+    # at 'http://localhost:3000/favorites', you can see the data which is rendered.
+    # byebug
   end
 
   # PATCH/PUT /reviews/1
@@ -64,5 +80,6 @@ class ReviewsController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def review_params
       params.require(:review).permit(:user_id, :api_id, :rating, :contents)
+      params.require(:restaurant).permit(:name, :image_url, :rating, :price, :display_phone, :display_address, :longitude, :latitude, :api_id)
     end
 end
