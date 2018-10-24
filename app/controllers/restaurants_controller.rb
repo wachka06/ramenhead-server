@@ -14,7 +14,17 @@ class RestaurantsController < ApplicationController
 
   # POST /favorites
   def create
-    @restaurant = Restaurant.new(restaurant_params)
+    @restaurant = Restaurant.new({
+        name: params[:restaurant][:name],
+        image_url: params[:restaurant][:image_url],
+        rating: params[:restaurant][:rating],
+        price: params[:restaurant][:price],
+        display_phone: params[:restaurant][:display_phone],
+        display_address: params[:restaurant][:location][:display_address]*" ",
+        longitude: params[:restaurant][:coordinates][:longitude],
+        latitude: params[:restaurant][:coordinates][:latitude],
+        api_id: params[:restaurant][:id]
+      })
 
     if @restaurant.save
       render json: @restaurant, status: :created, location: @restaurant

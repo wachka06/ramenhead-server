@@ -15,8 +15,25 @@ class ReviewsController < ApplicationController
 
   # POST /reviews
   def create
-    @review = Review.new(review_params)
+    byebug
+    @restaurant = Restaurant.find_or_create_by(
+      name: params[:restaurant][:name],
+      image_url: params[:restaurant][:image_url],
+      rating: params[:restaurant][:rating],
+      price: params[:restaurant][:price],
+      display_phone: params[:restaurant][:display_phone],
+      display_address: params[:restaurant][:location][:display_address],
+      longitude: params[:restaurant][:coordinates][:longitude],
+      latitude: params[:restaurant][:coordinates][:latitude],
+      api_id: params[:restaurant][:id]
+    )
 
+    @review = Review.new(
+      rating: params[:review][:rating],
+      contents: params[:review][:contents],
+      user_id: User.first.id,  # params[:review][:user_id]
+      restaurant_id: @restaurant.id
+    )
     if @review.save
       render json: @review, status: :created, location: @review
     else
@@ -46,6 +63,6 @@ class ReviewsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def review_params
-      params.permit(:review).require(:user_id, :restaurant_id, :rating, :contents)
+      params.require(:review).permit(:user_id, :api_id, :rating, :contents)
     end
 end
