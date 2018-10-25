@@ -42,12 +42,14 @@ class ReviewsController < ApplicationController
   end
 
   def get_reviews
-    @reviews = Review.where(api_id: params[:api_id])
-    render json: @reviews
+    # byebug
+    @restaurant = Restaurant.find_by(api_id: params[:api_id])
+    # @reviews = Review.where(api_id: params[:api_id])
+    render json: @restaurant.reviews
   end
 
   def get_user_reviews
-    # byebug
+    byebug
     @user = User.find(params[:id]) #find take integer as the parameter
     @review = @user.reviews # Currently, @favorite just stay in backend
     # check 'http://localhost:3000/1/get_favorites' if the favorite restaurant is saved in the user's show page.
