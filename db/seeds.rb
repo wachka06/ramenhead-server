@@ -6,9 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-natsuki = User.create(name: "natsuki", password_digest: "natnat", email:"nat@gmail.com")
-nicky = User.create(name: "nicky", password_digest: "nickynicky", email:"nicky@gmail.com")
-nkosi = User.create(name: "nkosi", password_digest: "koskos", email:"kos@gmail.com")
+ishoBoii = User.create(name: "IshoBoii", password_digest: "IshoBoiiii", email:"IshoBoii@gmail.com")
+ishoGirl = User.create(name: "IshoGirl", password_digest: "IshoGirlll", email:"IshoGirl@gmail.com")
 
 # ippudo = Restaurant.create(name: "Ippudo",
 #   image_url: "https://s3-media2.fl.yelpcdn.com/ephoto/TZ0gQ1nSBVe_X4PYg44s0w/o.jpg",

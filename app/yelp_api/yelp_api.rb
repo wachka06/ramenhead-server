@@ -9,7 +9,7 @@ require "optparse"
       @search_path = "/v3/businesses/search"
     end
 
-    def search(term, location, limit = 20, radius = 40000) #radius should be integer! no float! The integer shows meter.
+    def search(term, location, limit = 50, radius = 40000) #radius should be integer! no float! The integer shows meter.
       url = "#{@api_host}#{@search_path}"
       params = {
         term: term,
