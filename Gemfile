@@ -53,3 +53,4 @@ gem 'yelp', require: 'yelp'
 gem "json"
 gem "http"
 gem 'OptionParser', '~> 0.5.1'
+gem 'faker'

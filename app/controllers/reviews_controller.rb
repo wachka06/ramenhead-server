@@ -44,8 +44,13 @@ class ReviewsController < ApplicationController
   def get_reviews
     # byebug
     @restaurant = Restaurant.find_by(api_id: params[:api_id])
+    # print 'PARAMMMMMS' + params[:api_id]
+    print "GGGGGGGGGG"
+    print @restaurant
     # @reviews = Review.where(api_id: params[:api_id])
-    render json: @restaurant.reviews
+    if @restaurant.reviews
+      render json: @restaurant.reviews
+    end 
   end
 
   def get_user_reviews
